@@ -1,3 +1,6 @@
+[tool.pytest.ini_options]
+addopts = "--asyncio-mode=auto"
+
 [tool.black]
 line-length = 88
 exclude = '''
