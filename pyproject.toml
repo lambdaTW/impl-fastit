@@ -1,3 +1,15 @@
+[tool.ruff]
+select = ["E", "F", "W"]
+fixable = ["ALL"]
+exclude = [
+    ".git",
+    "venv",
+    "migrations",
+]
+line-length = 88
+# Assume Python 3.8
+target-version = "py38"
+
 [tool.black]
 line-length = 88
 exclude = '''
