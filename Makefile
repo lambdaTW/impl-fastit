@@ -1,10 +1,18 @@
 .EXPORT_ALL_VARIABLES:
 PYTHONPATH = ${PWD}/src
 
+migrate:  ## Migrate DB to head version
+	cd src/app/ && python -m alembic upgrade head
+.PHONY: migrate
+
+migrations:  ## Make alembic migrations, ex: make migrations msg="create auth tables"
+	cd src/app/ && python -m alembic revision --autogenerate -m "$(msg)"
+.PHONY: migrations
+
 lint:  ## Run linting
 	python -m black --check .
 	python -m isort -c .
-	python -m flake8 .
+	python -m ruff .
 .PHONY: lint
 
 lint-fix:  ## Run autoformatters
