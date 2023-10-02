@@ -1,1 +1,1 @@
-from app.models import auth
+from app.models import auth     # noqa: F401
