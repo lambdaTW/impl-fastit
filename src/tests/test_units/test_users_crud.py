@@ -3,13 +3,11 @@ import typing
 from unittest import mock
 
 import pytest
-from sqlalchemy import future as sqlalchemy_future
 from sqlalchemy import orm
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 from sqlalchemy_utils import functions
 
 from app.crud import auth as auth_crud
-from app.models import auth as auth_models
 from core import config
 
 
@@ -118,16 +116,6 @@ async def test_create_and_read_user(
         "password": password,
     }
     user = await auth_crud.user.create(db, obj_in)
-    user = (
-        (
-            await db.execute(
-                sqlalchemy_future.select(auth_models.User).where(
-                    auth_models.User.id == user.id
-                )
-            )
-        )
-        .scalars()
-        .first()
-    )
+    user = await auth_crud.user.get_by_username(db, username)
     assert user.username == "username"
     assert user.password == "password"
