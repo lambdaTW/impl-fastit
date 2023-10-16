@@ -3,12 +3,12 @@ import typing
 from unittest import mock
 
 import pytest
-from fastapi import encoders
 from sqlalchemy import future as sqlalchemy_future
 from sqlalchemy import orm
 from sqlalchemy.ext import asyncio as sqlalchemy_asyncio
 from sqlalchemy_utils import functions
 
+from app.crud import auth as auth_crud
 from app.models import auth as auth_models
 from core import config
 
@@ -117,10 +117,7 @@ async def test_create_and_read_user(
         "username": username,
         "password": password,
     }
-    obj_in_data = encoders.jsonable_encoder(obj_in)
-    user = auth_models.User(**obj_in_data)
-    db.add(user)
-    await db.commit()
+    user = await auth_crud.user.create(db, obj_in)
     user = (
         (
             await db.execute(
